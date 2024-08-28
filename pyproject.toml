@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name='whyis-fediverse'
+version='0.1.0'
+dependencies=[
+  'whyis',
+]
+[tool.setuptools]
+packages=['whyis_fediverse']
+
+[project.entry-points.whyis]
+whyis_fediverse = "whyis_fediverse:FediversePlugin"
