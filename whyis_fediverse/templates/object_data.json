@@ -34,7 +34,7 @@
     {% if not loop.first %}],{% endif %}
     {%- endfor %}
     {%- if element.value(app.NS.astr.content) %}
-    "content" : "{{element.value(app.NS.astr.content).value|markdown }}",
+    "content" : {{element.value(app.NS.astr.content).value|markdown|tojson |safe}},
     {%- endif %}
     {%- if element.value(app.NS.astr.summary) %}
     "summary" : "{{element.value(app.NS.astr.summary).value }}",
