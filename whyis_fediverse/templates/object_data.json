@@ -39,8 +39,10 @@
     {%- if element.value(app.NS.astr.summary) %}
     "summary" : "{{element.value(app.NS.astr.summary).value }}",
     {%- endif %}
-    {%- if element.value(app.NS.astr.url) %}
-    "url" : "{{element.value(app.NS.astr.url).identifier }}",
+    {%- if element.value(ns.whyis.hasFileID) %}
+    "url" : "{{url_for('entity.view',uri=element.identifier)}}",
+    {%- else %}
+    "url" : "{{element.identifier }}",
     {%- endif %}
     {%- if element.value(app.NS.astr.actor) %}
     "actor" : "{{element.value(app.NS.astr.actor).identifier }}",
