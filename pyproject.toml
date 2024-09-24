@@ -4,12 +4,30 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name='whyis-fediverse'
-version='0.1.2'
+version='0.1.3'
 dependencies=[
   'whyis',
 ]
-[tool.setuptools]
-packages=['whyis_fediverse']
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+#[tool.setuptools]
+#package-dir = {"" = "src/*"}
+#packages=['whyis_fediverse','whyis_fediverse.static','whyis_fediverse.templates']
+
+#[tool.setuptools.packages]
+#find = {}
 
 [project.entry-points.whyis]
 whyis_fediverse = "whyis_fediverse:FediversePlugin"
+
+#[tool.setuptools.package-dir]
+#whyis_fediverse = "whyis_fediverse"
+#whyis_fediverse.templates = "templates"
+#whyis_fediverse.static = "static"
+
+[tool.setuptools.package-data]
+whyis_fediverse = ["static/**/*", "templates/*"]
+#[tool.setuptools.package-data]
+#whyis_fediverse = ['*']
