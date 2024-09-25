@@ -1,5 +1,11 @@
 import {Vue, axios, createApp} from '../../../dist/whyis.js';
 
+function randomID() {
+    var result =  Math.random().toString().replace('0.','');
+    console.log(result);
+    return result;
+}
+
 function newPost(uri) {
     return {
 	"@context" : [
@@ -35,7 +41,7 @@ async function uploadFiles(fileList, uri){
     Array
 	.from(Array(fileList.length).keys())
 	.map(x => {
-	    let new_file_name = crypto.randomUUID();
+	    let new_file_name = randomID();
 	    let upload_name = fileList[x].name;
 	    distrData.append(new_file_name, fileList[x], new_file_name);
 	    distrLDs[x] = {
@@ -84,7 +90,7 @@ export default Vue.component('fedi-new-post', {
 	}
     },
     data() {
-	let id = crypto.randomUUID();
+	let id = randomID();
 	let uri = `${LOD_PREFIX}/note/${id}`;
 	console.log(uri, id);
         return {
@@ -144,7 +150,7 @@ export default Vue.component('fedi-new-post', {
 	    let old_id = this.id;
 	    let post = this.post;
 
-	    this.id = crypto.randomUUID();
+	    this.id = randomID();
 	    this.uri = `${LOD_PREFIX}/note/${this.id}`;
 	    this.post = newPost(this.uri);
 	    this.attachments = null;
