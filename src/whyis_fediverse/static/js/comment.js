@@ -25,16 +25,18 @@ export default Vue.component('fedi-comment', {
     },
     template: `
     <md-content style="margin-top:1.5em">
-      <div style="width:fit-content; margin-top:0.5em; border-radius:1em; padding-left:0.75em; padding-right:0.75em; background-color:lightgray">
-            <a :href="value.attributedTo.id">
-              <small>
-                <strong>{{value.attributedTo.name}}</strong>
-              </small>
-            </a>
-          <div v-html="value.content"></div>
-      </div>
       <div v-if="value.attachment != null && value.attachment.length != 0">
         <img style="" v-for="image in value.attachment" :src="image.url" :alt="image.url">
+      </div>
+      <div style="width:fit-content; margin-top:0.5em; border-radius:1em; padding-left:0.75em; padding-right:0.75em; background-color:lightgray">
+        <small>
+          <a :href="value.attributedTo.view">
+            <strong>{{value.attributedTo.name}}</strong>
+            (@{{value.attributedTo.id.split('/').pop()}})
+            {{published}}
+          </a>
+        </small>
+        <div v-html="value.content"></div>
       </div>
     </md-content>
     `,
