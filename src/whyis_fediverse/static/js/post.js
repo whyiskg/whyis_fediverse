@@ -28,19 +28,21 @@ export default Vue.component('fedi-post', {
       <md-card-header>
         <md-card-header-text>
           <div class="md-subhead">
-            <a :href="value.attributedTo.id">
+            <a :href="value.attributedTo.view">
               <md-avatar class="md-avatar-icon">{{value.attributedTo.name[0]}}</md-avatar>
               <strong>{{value.attributedTo.name}}</strong> <small>(@{{value.attributedTo.id.split('/').pop()}})</small>
             </a>
             <br/>
-            <small><a :href="value.id">{{published}}</a></small>
+            <small><a :href="value.view">{{published}}</a></small>
           </div>
           <div class="md-title" v-if="value.name"><a :href="value.id">{{value.name}}</a></div>
         </md-card-header-text>
       </md-card-header>
       <md-card-content v-html="value.content"></md-card-content>
       <md-card-media v-if="value.attachment != null && value.attachment.length != 0">
-        <img  v-for="image in value.attachment" :src="image.url" :alt="image.url">
+        <a :href="image.view" v-for="image in value.attachment">
+          <img :src="image.url" :alt="image.url"/>
+        </a>
       </md-card-media>
     </md-card>
     `,

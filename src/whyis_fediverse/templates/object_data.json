@@ -44,6 +44,7 @@
     {%- else %}
     "url" : "{{element.identifier }}",
     {%- endif %}
+    "view" : "{{url_for('entity.view', view='view', uri=element.identifier)}}",
     {%- if element.value(app.NS.astr.actor) %}
     "actor" : "{{element.value(app.NS.astr.actor).identifier }}",
     {%- endif %}
