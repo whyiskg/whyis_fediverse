@@ -34,16 +34,24 @@ whyis:hasReplies dc:identifier "replies";
   rdfs:subPropertyOf whyis:hasView.
 
 rdfs:Resource
+  whyis:hasEmbed "whyis_fediverse:embed_resource.html";
   whyis:comments "whyis_fediverse:discussion.json";
   whyis:discussion "whyis_fediverse:discussion.html".
 
 whyis:HomePage
+  whyis:discussion "whyis_fediverse:all_discussion.html";
   whyis:comments "whyis_fediverse:all_discussion.json".
+
+whyis:hasEmbed dc:identifier "embed";
+  rdfs:subPropertyOf whyis:hasView.
+
+
 
 as:Object a owl:Class;
   whyis:hasView "whyis_fediverse:object_view.html";
   whyis:hasData "whyis_fediverse:object_data.json";
   whyis:hasReplies "whyis_fediverse:object_replies.json";
+  whyis:hasEmbed "whyis_fediverse:embed_object.html";
   rdfs:subClassOf rdfs:Resource.
 
 as:Article a owl:Class;
@@ -59,6 +67,7 @@ as:Event a owl:Class;
   rdfs:subClassOf as:Object.
 
 as:Image a owl:Class;
+  whyis:hasEmbed "whyis_fediverse:embed_image.html";
   rdfs:subClassOf as:Object.
 
 as:Note a owl:Class;
@@ -80,4 +89,5 @@ as:Tombstone a owl:Class;
   rdfs:subClassOf as:Object.
 
 as:Video a owl:Class;
+  whyis:hasEmbed "whyis_fediverse:embed_video.html";
   rdfs:subClassOf as:Object.

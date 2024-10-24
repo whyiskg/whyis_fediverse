@@ -23,6 +23,13 @@
 	{%- endfor %}
     ],
     {%- endif %}
+    {%- if element.value(app.NS.astr.context) %}
+    "context" : [
+	{% for o in element[app.NS.astr.context] -%}
+	  {{object(o)}}{% if not loop.last %}, {% endif %}
+	{%- endfor %}
+    ],
+    {%- endif %}
     "replies" : [
     {% for o in app.db.subjects(app.NS.astr.inReplyTo, element.identifier) -%}
         "{{o}}"{% if not loop.last %}, {% endif %}
@@ -45,14 +52,12 @@
     "url" : "{{element.identifier }}",
     {%- endif %}
     "view" : "{{url_for('entity.view', view='view', uri=element.identifier)}}",
+    "embed" : {{ element.identifier | include('embed') |tojson| safe }},
     {%- if element.value(app.NS.astr.actor) %}
     "actor" : "{{element.value(app.NS.astr.actor).identifier }}",
     {%- endif %}
     {%- if element.value(app.NS.astr.object) %}
     "object" : "{{element.value(app.NS.astr.object).identifier }}",
-    {%- endif %}
-    {%- if element.value(app.NS.astr.context) %}
-    "context" : "{{element.value(app.NS.astr.context).identifier }}",
     {%- endif %}
     {%- if element.value(app.NS.astr.inReplyTo) %}
     "inReplyTo" : "{{element.value(app.NS.astr.inReplyTo).identifier }}",

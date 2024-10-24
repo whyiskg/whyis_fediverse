@@ -1,13 +1,14 @@
 import {Vue, axios, createApp} from '../../../dist/whyis.js';
 import post from './post.js';
 import newPost from './new_post.js';
+import selections from './selections.js';
 
 export default Vue.component('fedi-discussion', {
     name: "fedi-discussion",
     props:{
         entity: {
             type: String,
-            require: true
+            require: false
         }
     },
     data() {
@@ -16,24 +17,24 @@ export default Vue.component('fedi-discussion', {
             loading: false,
             loadError: false,
             otherArgs: null,
-            pageSize: 20,
+            pageSize: 20
         }
     },
     template: `
-    <div style="max-width:500px">
+    <fedi-selection >
         <spinner :loading="loading" text='Loading...' v-if="loading"/>
-        <div v-else>
-            <fedi-new-post style="margin-top:0.5em; border-radius:0.5em"
+        <div v-else class="mgcontainer">
+            <fedi-new-post style="width:40em; margin-top:0.5em; border-radius:0.5em"
                            :entity="entity">
             </fedi-new-post>
-            <fedi-post style="margin-top:0.5em; border-radius:0.5em"
+            <fedi-post  style="width:40em; margin-top:0.5em; border-radius:0.5em"
                   v-for="(post, index) in results" 
                   :key="post.id" 
                   :entity="entity" 
                   v-bind:value="post">
             </fedi-post>
         </div>
-    </div>`,
+    </fedi-selection>`,
     watch: {
     },
     components: {

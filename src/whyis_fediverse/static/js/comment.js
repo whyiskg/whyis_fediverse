@@ -1,7 +1,11 @@
 import dayjs from '//unpkg.com/dayjs@1.11.13/esm';
 import relativeTime from '//unpkg.com/dayjs@1.11.13/esm/plugin/relativeTime';
 dayjs.extend(relativeTime);
+
+import selectable from './selectable.js';
+
 import {Vue, axios, createApp} from '../../../dist/whyis.js';
+
 export default Vue.component('fedi-comment', {
     name: "fedi-comment",
     props:{
@@ -26,7 +30,15 @@ export default Vue.component('fedi-comment', {
     template: `
     <md-content style="margin-top:1.5em">
       <div v-if="value.attachment != null && value.attachment.length != 0">
-        <img style="" v-for="image in value.attachment" :src="image.url" :alt="image.url">
+        <fedi-selectable v-bind:uri="a.id" v-for="a in value.attachment" v-bind:key="a.id" v-html="a.embed">
+        </fedi-selectable>
+      </div>
+      <div v-if="value.attachment != null && value.attachment.length != 0">
+        <fedi-selectable v-bind:uri="a.id" v-for="a in value.context" v-bind:key="a.id" v-html="a.embed">
+        </fedi-selectable>
+      </div>
+      <div v-if="value.context != null && value.context.length != 0">
+        <img style="" v-for="image in value.context" :src="image.url" :alt="image.url">
       </div>
       <div style="width:fit-content; margin-top:0.5em; border-radius:1em; padding-left:0.75em; padding-right:0.75em; background-color:lightgray">
         <small>

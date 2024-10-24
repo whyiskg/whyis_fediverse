@@ -2,6 +2,7 @@ import {Vue, axios, createApp} from '../../../dist/whyis.js';
 import post from './post.js';
 import comment from './comment.js';
 import newPost from './new_post.js';
+import selections from './selections.js';
 
 export default Vue.component('fedi-post-view', {
     name: "fedi-post-view",
@@ -21,7 +22,7 @@ export default Vue.component('fedi-post-view', {
         }
     },
     template: `
-    <div>
+    <fedi-selection>
         <spinner :loading="loading" text='Loading...' v-if="loading"/>
         <div v-else class="md-layout md-gutter">
 	    <div class="md-layout-item md-scrollbar">
@@ -44,12 +45,11 @@ export default Vue.component('fedi-post-view', {
                 </fedi-comment>
 	      </div>
               <fedi-new-post v-if="post != null"
-                             :inReplyTo="post.id"
-                             :entity="post.context">
+                             :inReplyTo="post.id">
               </fedi-new-post>
             </div>
         </div>
-    </div>`,
+    </fedi-selection>`,
     watch: {
     },
     components: {

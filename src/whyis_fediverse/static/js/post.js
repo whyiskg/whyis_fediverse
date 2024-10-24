@@ -1,6 +1,10 @@
 import dayjs from '//unpkg.com/dayjs@1.11.13/esm';
 import relativeTime from '//unpkg.com/dayjs@1.11.13/esm/plugin/relativeTime';
 dayjs.extend(relativeTime);
+
+
+import selectable from './selectable.js';
+
 import {Vue, axios, createApp} from '../../../dist/whyis.js';
 export default Vue.component('fedi-post', {
     name: "fedi-post",
@@ -39,10 +43,11 @@ export default Vue.component('fedi-post', {
         </md-card-header-text>
       </md-card-header>
       <md-card-content v-html="value.content"></md-card-content>
-      <md-card-media v-if="value.attachment != null && value.attachment.length != 0">
-        <a :href="image.view" v-for="image in value.attachment">
-          <img :src="image.url" :alt="image.url"/>
-        </a>
+      <md-card-media v-if="(value.attachment != null && value.attachment.length != 0) || (value.context != null && value.context.length != 0)">
+        <fedi-selectable v-bind:uri="a.id" v-for="a in value.attachment" v-bind:key="a.id" v-html="a.embed">
+        </fedi-selectable>
+        <fedi-selectable v-bind:uri="a.id" v-for="a in value.context" v-bind:key="a.id" v-html="a.embed">
+        </fedi-selectable>
       </md-card-media>
     </md-card>
     `,

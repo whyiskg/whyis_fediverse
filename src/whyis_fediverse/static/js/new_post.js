@@ -1,5 +1,8 @@
 import {Vue, axios, createApp} from '../../../dist/whyis.js';
 
+import post from './selections.js';
+
+
 function randomID() {
     var result =  Math.random().toString().replace('0.','');
     console.log(result);
@@ -40,8 +43,8 @@ async function uploadFiles(fileList, uri){
     // append the files to FormData
     Array
 	.from(Array(fileList.length).keys())
-	.map(x => {
-	    let new_file_name = randomID();
+	.map(function(x, idx) {
+	    let new_file_name = (idx+1).toString();
 	    let upload_name = fileList[x].name;
 	    distrData.append(new_file_name, fileList[x], new_file_name);
 	    distrLDs[x] = {
@@ -89,6 +92,7 @@ export default Vue.component('fedi-new-post', {
 	    require: false
 	}
     },
+    inject : ['selection'],
     data() {
 	let id = randomID();
 	let uri = `${LOD_PREFIX}/note/${id}`;
@@ -97,6 +101,8 @@ export default Vue.component('fedi-new-post', {
 	    user: USER,
             otherArgs: null,
 	    attachments: [],
+            embeds: {},
+            hovers: {},
 	    id : id,
 	    uri : uri,
 	    post: newPost(uri),
@@ -115,18 +121,62 @@ export default Vue.component('fedi-new-post', {
               <md-icon  md-size="small">send</md-icon>
             </md-button>
             </md-field>
+              <div style="position:relative"
+                   v-for="item in selection"
+                   v-bind:key="item"
+                   v-on:mouseenter="hovers[item] = true"
+                   v-on:mouseleave="hovers[item] = false" >
+                <div v-html="embeds[item]"></div>
+                <md-button style="position: absolute; right: 0; top: 0; "
+                           class="md-icon-button md-raised md-mini"
+                           v-on:click="unselect(item)">
+                  <md-icon>delete</md-icon>
+                </md-button>
+              </div>
             <md-field id="media_upload">
               <label>Add media</label>
-              <md-file ref="attachments" v-model="attachments" multiple />
+              <md-file name="media_upload" ref="attachments" v-model="attachments" multiple />
             </md-field>
         </md-card-content>
     </md-card>
     `,
     watch: {
+        selection: {
+            handler: function (val, oldVal) {
+                this.selection.forEach(this.getEmbed)
+            },
+            deep: true
+        }
     },
     components: {
     },
     methods: {
+        unselect : function (uri) {
+            if (this.selection.includes(uri)) {
+                var index = this.selection.indexOf(uri)
+                this.selection.splice(index, 1)
+            }
+        },
+        select : function (uri) {
+            if (!this.selection.includes(uri)) {
+                this.selection.push(uri)
+            }
+        },
+        async getEmbed(uri) {
+            console.log(uri)
+            if (this.embeds[uri] == null) {
+                this.embeds[uri] = "embeds_loading"
+                const result = await axios.get(`${ROOT_URL}about`,
+                                               { params: {
+                                                   view: "embed",
+                                                   uri: uri,
+                                               }
+                                               })
+                this.embeds[uri] = result.data
+                this.$forceUpdate()
+            }
+        },
+
         async loadPage() {
         },
         async scrollBottom () {
@@ -140,11 +190,9 @@ export default Vue.component('fedi-new-post', {
 	    if (this.inReplyTo != null) {
 		this.post.inReplyTo = this.inReplyTo;
 	    }
-	    if (this.entity != null) {
-		this.post.context = this.entity;
-	    }
 	    let now = new Date();
 	    this.post.published = now.toISOString();
+            this.post.context = this.selection;
 	    
 	    let attachments = this.$refs.attachments.$refs.inputFile.files;
 	    let old_id = this.id;
@@ -170,14 +218,17 @@ export default Vue.component('fedi-new-post', {
 		    'Content-Type': 'application/ld+json'
 		}
 	    });
-	    
+	    //this.selection.length = 0;
 	    if (this.inReplyTo == null) {
 		window.location.href = `${window.location.origin}/about?uri=${post.id}`;
 	    }
 	}
     },
     async mounted (){
-	
+        if (this.entity != null && this.inReplyTo == null) {
+            this.select(this.entity)
+        }
+        this.selection.forEach(this.getEmbed)
     },
     async unmounted() {
     },
