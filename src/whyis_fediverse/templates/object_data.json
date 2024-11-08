@@ -72,11 +72,9 @@
     "name" : "{{element.value(app.NS.astr.name).value }}",
     {%- endif %}
     "typing" : [
-    {% if app.rdb %}
-        {% for o in app.rdb.hkeys(element.identifier.toPython()) -%}
+        {% for o in app.celery.backend.client.hkeys(element.identifier.toPython()) -%}
         "{{object(rdflib.URIRef(o.encode('utf8')))}}"{% if not loop.last %}, {% endif %}
-    {%- endfor %}
-    {% endif %}
+        {%- endfor %}
     ],
     "id" : "{{element.identifier}}"
 }
