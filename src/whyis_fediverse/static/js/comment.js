@@ -27,6 +27,8 @@ export default Vue.component('fedi-comment', {
             pageSize: 20,
         }
     },
+    typing_template: `
+    `,
     template: `
     <md-content style="margin-top:1.5em">
       <div v-if="value.attachment != null && value.attachment.length != 0">
@@ -48,12 +50,13 @@ export default Vue.component('fedi-comment', {
         <div v-html="value.content"></div>
       </div>
       <div v-for="agent in value.typing"
+        v-bind:key="agent.id"
         style="width:fit-content; margin-top:0.5em; border-radius:1em; padding-left:0.75em; padding-right:0.75em; background-color:lightgray">
         <small>
           <a :href="agent.view">
             <strong>{{agent.name}}</strong>
             (@{{agent.id.split('/').pop()}})
-            <spinner :loading="true" text='...'/>
+            <spinner :loading="true" text=''/>
           </a>
         </small>
       </div>
