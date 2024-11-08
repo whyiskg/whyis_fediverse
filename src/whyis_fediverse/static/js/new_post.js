@@ -201,8 +201,6 @@ export default Vue.component('fedi-new-post', {
 	    this.id = randomID();
 	    this.uri = `${LOD_PREFIX}/note/${this.id}`;
 	    this.post = newPost(this.uri);
-	    this.attachments = null;
-	    
 	    if (attachments.length >0) {
 		const collectionURI = `${LOD_PREFIX}/media/${old_id}`;
 		console.log(collectionURI);
@@ -218,10 +216,12 @@ export default Vue.component('fedi-new-post', {
 		    'Content-Type': 'application/ld+json'
 		}
 	    });
-	    //this.selection.length = 0;
+	    this.selection.length = 0;
 	    if (this.inReplyTo == null) {
 		window.location.href = `${window.location.origin}/about?uri=${post.id}`;
 	    }
+            console.log(this.$refs.attachments);
+            this.$refs.attachments.value = null;
 	}
     },
     async mounted (){
