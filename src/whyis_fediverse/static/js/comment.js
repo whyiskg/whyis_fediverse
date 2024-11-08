@@ -47,6 +47,16 @@ export default Vue.component('fedi-comment', {
         </small>
         <div v-html="value.content"></div>
       </div>
+      <div v-for="agent in value.typing"
+        style="width:fit-content; margin-top:0.5em; border-radius:1em; padding-left:0.75em; padding-right:0.75em; background-color:lightgray">
+        <small>
+          <a :href="agent.view">
+            <strong>{{agent.name}}</strong>
+            (@{{agent.id.split('/').pop()}})
+            <spinner :loading="true" text='...'/>
+          </a>
+        </small>
+      </div>
     </md-content>
     `,
     watch: {
