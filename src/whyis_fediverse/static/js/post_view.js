@@ -47,6 +47,22 @@ export default Vue.component('fedi-post-view', {
                   </fedi-comment>
                 </div>
 	      </div>
+              <div v-for="agent in post.typing"
+                   v-bind:key="agent.id"
+                   style="width:fit-content; 
+                          margin-top:0.5em; 
+                          border-radius:1em; 
+                          padding-left:0.75em; 
+                          padding-right:0.75em; 
+                          background-color:lightgray">
+                <small>
+                  <a :href="agent.view">
+                    <strong>{{agent.name}}</strong>
+                    (@{{agent.id.split('/').pop()}})
+                    <spinner :loading="true" text=''/>
+                  </a>
+                </small>
+              </div>
               <fedi-new-post v-if="post != null"
                              :inReplyTo="post.id">
               </fedi-new-post>
@@ -75,6 +91,9 @@ export default Vue.component('fedi-post-view', {
 	    this.post = response.data;
 	},
         async loadReplyData(uri) {
+	    if (this.post.typing.length > 0) {
+		this.loadPost();
+	    }
             if (this.replyData[uri] == null || this.replyData[uri]['typing'].length > 0) {
                 let response = await axios.get(`${ROOT_URL}about`,
 					   {
