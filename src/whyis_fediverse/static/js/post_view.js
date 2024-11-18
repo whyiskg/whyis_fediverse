@@ -75,7 +75,7 @@ export default Vue.component('fedi-post-view', {
 	    this.post = response.data;
 	},
         async loadReplyData(uri) {
-            if (this.replyData[uri] == null) {
+            if (this.replyData[uri] == null || this.replyData[uri]['typing'].length > 0) {
                 let response = await axios.get(`${ROOT_URL}about`,
 					   {
 					       params: {

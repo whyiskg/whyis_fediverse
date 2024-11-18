@@ -1,1 +1,3 @@
+{%- if this.value(app.NS.astr.content) %}
 {{this.value(app.NS.astr.content).value|markdown|safe}}
+{%- endif %}
