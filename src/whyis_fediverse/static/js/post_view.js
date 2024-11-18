@@ -16,6 +16,7 @@ export default Vue.component('fedi-post-view', {
         return {
             post: null,
             replies: null,
+            replyData: {},
             loading: false,
             loadError: false,
             otherArgs: null,
@@ -38,11 +39,13 @@ export default Vue.component('fedi-post-view', {
                     md-label="Reply to this thread"
                     md-description="Reply below to continue this conversation.">
 		</md-empty-state>
-                <fedi-comment v-else
-                           v-for="reply in replies"
-                           :key="reply.id"
-                           v-bind:value="reply">
-                </fedi-comment>
+                <div v-else>
+                  <fedi-comment v-if="replyData[reply]"
+                             v-for="reply in replies"
+                             :key="reply"
+                             v-bind:value="replyData[reply]">
+                  </fedi-comment>
+                </div>
 	      </div>
               <fedi-new-post v-if="post != null"
                              :inReplyTo="post.id">
@@ -71,6 +74,19 @@ export default Vue.component('fedi-post-view', {
 	    console.log(response.data);
 	    this.post = response.data;
 	},
+        async loadReplyData(uri) {
+            if (this.replyData[uri] == null) {
+                let response = await axios.get(`${ROOT_URL}about`,
+					   {
+					       params: {
+						   view: "data",
+						   uri: uri
+					       }
+					   });
+                this.replyData[uri] = response.data;
+            }
+            return this.replyData[uri];
+        },
 	async loadReplies() {
             let response = await axios.get(`${ROOT_URL}about`,
 				     {
@@ -79,6 +95,10 @@ export default Vue.component('fedi-post-view', {
 					     uri: this.object
 					 }
 				     });
+            let that = this;
+            await response.data.forEach(function (reply) {
+                that.loadReplyData(reply);
+            });
 	    this.replies = response.data;
 	}
     },

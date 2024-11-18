@@ -6,6 +6,6 @@ select distinct ?reply where {
 } order by (?published) ' -%}
 [
     {% for row in context_query | query(values={"post":this.identifier}) %}
-    {{row['reply'] | include('data') | safe }}{% if not loop.last %}, {% endif %}
+    {{row['reply'] | tojson }}{% if not loop.last %}, {% endif %}
     {%- endfor %}
 ]
