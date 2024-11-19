@@ -14,10 +14,11 @@ export default Vue.component('fedi-discussion', {
     data() {
         return {
             results: [],
+	    postData: {},
             loading: false,
             loadError: false,
             otherArgs: null,
-            pageSize: 20
+            pageSize: 10
         }
     },
     template: `
@@ -27,11 +28,11 @@ export default Vue.component('fedi-discussion', {
             <fedi-new-post style="width:40em; margin-top:0.5em; border-radius:0.5em"
                            :entity="entity">
             </fedi-new-post>
-            <fedi-post  style="width:40em; margin-top:0.5em; border-radius:0.5em"
-                  v-for="(post, index) in results" 
-                  :key="post.id" 
-                  :entity="entity" 
-                  v-bind:value="post">
+            <fedi-post style="width:40em; margin-top:0.5em; border-radius:0.5em"
+                       v-if="postData[post]"
+                       v-for="post in results"
+                       :key="post"
+                       v-bind:value="postData[post]">
             </fedi-post>
         </div>
     </fedi-selection>`,
@@ -53,6 +54,24 @@ export default Vue.component('fedi-discussion', {
                                            }
                                            })
             this.results.push(...result.data)
+	    let that = this;
+            await this.results.forEach(function (post) {
+                that.loadPostData(post);
+            });
+        },
+        async loadPostData(uri) {
+            if (this.postData[uri] == null) {
+                let response = await axios.get(`${ROOT_URL}about`,
+					   {
+					       params: {
+						   view: "data",
+						   uri: uri
+					       }
+					   });
+                this.postData[uri] = response.data;
+		this.$forceUpdate();
+            }
+            return this.postData[uri];
         },
         async scrollBottom () {
             if (Math.ceil(window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
