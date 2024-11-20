@@ -121,7 +121,8 @@ export default Vue.component('fedi-new-post', {
               <md-icon  md-size="small">send</md-icon>
             </md-button>
             </md-field>
-              <div style="position:relative"
+            <div class="md-layout">
+              <div class="md-layout-item md-size-20" style="position:relative"
                    v-for="item in selection"
                    v-bind:key="item"
                    v-on:mouseenter="hovers[item] = true"
@@ -133,6 +134,7 @@ export default Vue.component('fedi-new-post', {
                   <md-icon>delete</md-icon>
                 </md-button>
               </div>
+            </div>
             <md-field id="media_upload">
               <label>Add media</label>
               <md-file name="media_upload" ref="attachments" v-model="attachments" multiple />
