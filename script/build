@@ -1,6 +1,8 @@
 #!/bin/bash
+set -e
 
 # Check release version in Dockerfile and setup.py
+source .venv/bin/activate
 
 VERSION=`python -c "import tomlkit; print(tomlkit.load(open('pyproject.toml', 'rb'))['project']['version'])"`
 
