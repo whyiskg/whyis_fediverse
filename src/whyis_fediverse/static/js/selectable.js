@@ -1,4 +1,4 @@
-import {registerComponent} from './vue_app.js';
+import {axios, Vue} from '../../../dist/whyis.js';
 
 const component = {
     name: "fedi-selectable",
@@ -40,4 +40,4 @@ const component = {
     },
 };
 
-export default registerComponent('fedi-selectable', component);
+export default Vue.component('fedi-selectable', component);

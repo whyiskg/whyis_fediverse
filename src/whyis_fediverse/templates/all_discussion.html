@@ -13,46 +13,45 @@
 </style>
 {% endblock %}
 {% block scripts %}
-    <script type="module" src="{{ url_for('static',filename='plugins/fediverse/js/vue_app.js')}}"></script>
     <script type="module" src="{{ url_for('static',filename='plugins/fediverse/js/discussion.js')}}"></script>
 
 {% endblock %}
 {% block content %}
 {% set attributes = this | include("attributes") | fromjson  %}
 
-    <div class="card mb-3">
+<ul class="nav nav-tabs card-header-tabs">
+    {% for v in this | get_views_list -%}
+    <li class="nav-item {% if v['view'].value == view %}active{% endif %}">
+        <a class="nav-link {% if v['view'].value == view %}active{% endif %}"
+           href="{{url_for('entity.view', uri=this.identifier, view=v['view'])}}">
+            {{v['label']}}
+        </a>
+    </li>
+    {%- endfor %}
+    {% if this.description().value(ns.whyis.hasFileID) %}
+    <li class="nav-item">
+        <a class="nav-link"
+           href="{{url_for('entity.view',uri=this.identifier)}}">
+            Download
+        </a>
+    </li>
+    {% endif %}
+    <li class="nav-item">
+        {{ vue_upload_button_tab_modal(this) }}
+    </li>
+    {% if not this.identifier.startswith(ns.local) %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{this.identifier}}"
+           aria-label="Visit Page" title="Visit Page">
+           Visit
+        </a>
+    </li>
+    {% endif %}
+</ul>
+<div class="card mb-3">
         {% if attributes.thumbnail %}<img class="card-img-top" src="{{url_for('entity.view', uri=attributes.thumbnail)}}" alt="{{attributes.label}}"/>
         {% endif %}
         <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                {% for v in this | get_views_list -%}
-                <li class="nav-item {% if v['view'].value == view %}active{% endif %}">
-                    <a class="nav-link {% if v['view'].value == view %}active{% endif %}"
-                       href="{{url_for('entity.view', uri=this.identifier, view=v['view'])}}">
-                        {{v['label']}}
-                    </a>
-                </li>
-                {%- endfor %}
-                {% if this.description().value(ns.whyis.hasFileID) %}
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{{url_for('entity.view',uri=this.identifier)}}">
-                        Download
-                    </a>
-                </li>
-                {% endif %}
-                <li class="nav-item">
-                    {{ vue_upload_button_tab_modal(this) }}
-                </li>
-                {% if not this.identifier.startswith(ns.local) %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{this.identifier}}"
-                       aria-label="Visit Page" title="Visit Page">
-                       Visit
-                    </a>
-                </li>
-                {% endif %}
-            </ul>
             <div class="row g-2 align-items-center mt-2">
                 <div class="col">
                     <div class="fs-5 fw-semibold">{{attributes.label}}</div>

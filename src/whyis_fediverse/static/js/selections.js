@@ -1,5 +1,5 @@
 import dayjs from '//unpkg.com/dayjs@1.11.13/esm';
-import {registerComponent} from './vue_app.js';
+import {axios, Vue} from '../../../dist/whyis.js';
 
 const component = {
     name: "fedi-selection",
@@ -31,4 +31,4 @@ const component = {
     },
 };
 
-export default registerComponent('fedi-selection', component);
+export default Vue.component('fedi-selection', component);

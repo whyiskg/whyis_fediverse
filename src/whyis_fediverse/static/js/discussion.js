@@ -1,8 +1,7 @@
-import {axios} from '../../../dist/whyis.js';
+import {axios, Vue} from '../../../dist/whyis.js';
 import post from './post.js';
 import newPost from './new_post.js';
 import selections from './selections.js';
-import {registerComponent} from './vue_app.js';
 
 const component = {
     name: "fedi-discussion",
@@ -93,4 +92,4 @@ const component = {
     }
 };
 
-export default registerComponent('fedi-discussion', component);
+export default Vue.component('fedi-discussion', component);

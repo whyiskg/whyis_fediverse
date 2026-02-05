@@ -1,7 +1,6 @@
-import {axios} from '../../../dist/whyis.js';
+import {axios, Vue} from '../../../dist/whyis.js';
 
 import post from './selections.js';
-import {registerComponent} from './vue_app.js';
 
 
 function randomID() {
@@ -242,4 +241,4 @@ const component = {
     }
 };
 
-export default registerComponent('fedi-new-post', component);
+export default Vue.component('fedi-new-post', component);
