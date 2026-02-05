@@ -1,7 +1,7 @@
 import dayjs from '//unpkg.com/dayjs@1.11.13/esm';
-import {Vue, axios, createApp} from '../../../dist/whyis.js';
+import {registerComponent} from './vue_app.js';
 
-export default Vue.component('fedi-selection', {
+const component = {
     name: "fedi-selection",
     data() {
         return {
@@ -29,4 +29,6 @@ export default Vue.component('fedi-selection', {
             this.selected.length = 0
         }
     },
-})
+};
+
+export default registerComponent('fedi-selection', component);

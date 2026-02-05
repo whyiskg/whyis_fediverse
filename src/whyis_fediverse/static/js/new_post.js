@@ -1,6 +1,7 @@
-import {Vue, axios, createApp} from '../../../dist/whyis.js';
+import {axios} from '../../../dist/whyis.js';
 
 import post from './selections.js';
+import {registerComponent} from './vue_app.js';
 
 
 function randomID() {
@@ -80,7 +81,7 @@ async function uploadFiles(fileList, uri){
     return distrLDs;
 }
 
-export default Vue.component('fedi-new-post', {
+const component = {
     name: "fedi-new-post",
     props:{
         entity: {
@@ -236,4 +237,6 @@ export default Vue.component('fedi-new-post', {
     },
     created(){
     }
-})
+};
+
+export default registerComponent('fedi-new-post', component);

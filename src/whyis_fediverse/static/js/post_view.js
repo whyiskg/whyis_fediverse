@@ -1,10 +1,11 @@
-import {Vue, axios, createApp} from '../../../dist/whyis.js';
+import {axios} from '../../../dist/whyis.js';
 import post from './post.js';
 import comment from './comment.js';
 import newPost from './new_post.js';
 import selections from './selections.js';
+import {registerComponent} from './vue_app.js';
 
-export default Vue.component('fedi-post-view', {
+const component = {
     name: "fedi-post-view",
     props:{
         object: {
@@ -130,4 +131,6 @@ export default Vue.component('fedi-post-view', {
     async unmounted() {
         window.removeEventListener("scroll", this.scrollBottom)
     }
-})
+};
+
+export default registerComponent('fedi-post-view', component);

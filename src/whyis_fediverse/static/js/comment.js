@@ -3,10 +3,10 @@ import relativeTime from '//unpkg.com/dayjs@1.11.13/esm/plugin/relativeTime';
 dayjs.extend(relativeTime);
 
 import selectable from './selectable.js';
+import {axios} from '../../../dist/whyis.js';
+import {registerComponent} from './vue_app.js';
 
-import {Vue, axios, createApp} from '../../../dist/whyis.js';
-
-export default Vue.component('fedi-comment', {
+const component = {
     name: "fedi-comment",
     props:{
         value: {
@@ -106,4 +106,6 @@ export default Vue.component('fedi-comment', {
     },
     created(){
     }
-})
+};
+
+export default registerComponent('fedi-comment', component);

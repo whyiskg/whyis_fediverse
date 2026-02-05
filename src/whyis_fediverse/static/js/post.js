@@ -4,9 +4,10 @@ dayjs.extend(relativeTime);
 
 
 import selectable from './selectable.js';
+import {axios} from '../../../dist/whyis.js';
+import {registerComponent} from './vue_app.js';
 
-import {Vue, axios, createApp} from '../../../dist/whyis.js';
-export default Vue.component('fedi-post', {
+const component = {
     name: "fedi-post",
     props:{
         value: {
@@ -95,4 +96,6 @@ export default Vue.component('fedi-post', {
     },
     created(){
     }
-})
+};
+
+export default registerComponent('fedi-post', component);
