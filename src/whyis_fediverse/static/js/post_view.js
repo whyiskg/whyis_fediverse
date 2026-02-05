@@ -27,12 +27,12 @@ const component = {
     <fedi-selection>
         <spinner :loading="loading" text='Loading...' v-if="loading"/>
         <div v-else class="row g-3">
-	    <div class="col-12 col-lg-6 overflow-auto">
+	    <div class="col-12 col-lg-6 overflow-y-auto">
 	      <fedi-post v-if="post != null" 
                          v-bind:value="post">
               </fedi-post>
 	    </div>
-	    <div class="col-12 col-lg-6 overflow-auto">
+	    <div class="col-12 col-lg-6 overflow-y-auto">
               <div>
 	        <div v-if="replies == null || replies.length == 0" class="border rounded p-4 text-center text-muted">
                   <i class="bi bi-chat-dots fs-1 mb-2 d-block"></i>

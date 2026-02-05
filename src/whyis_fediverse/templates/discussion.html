@@ -21,6 +21,8 @@
 {% set attributes = this | include("attributes") | fromjson  %}
 
     <div class="card mb-3">
+        {% if attributes.thumbnail %}<img class="card-img-top" src="{{url_for('entity.view', uri=attributes.thumbnail)}}" alt="{{attributes.label}}"/>
+        {% endif %}
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
                 {% for v in this | get_views_list -%}
@@ -60,8 +62,6 @@
                 </div>
             </div>
         </div>
-        {% if attributes.thumbnail %}<img class="card-img-top" src="{{url_for('entity.view', uri=attributes.thumbnail)}}" alt="{{attributes.label}}"/>
-        {% endif %}
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-12">
