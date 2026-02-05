@@ -29,28 +29,32 @@ const component = {
         }
     },
     template: `
-    <md-card>
-      <md-card-header>
-        <md-card-header-text>
-          <div class="md-subhead">
-            <a :href="value.attributedTo.view">
-              <md-avatar class="md-avatar-icon">{{value.attributedTo.name[0]}}</md-avatar>
-              <strong>{{value.attributedTo.name}}</strong> <small>(@{{value.attributedTo.id.split('/').pop()}})</small>
-            </a>
-            <br/>
-            <small><a :href="value.view">{{published}}</a></small>
-          </div>
-          <div class="md-title" v-if="value.name"><a :href="value.id">{{value.name}}</a></div>
-        </md-card-header-text>
-      </md-card-header>
-      <md-card-content v-html="value.content"></md-card-content>
-      <md-card-media v-if="(value.attachment != null && value.attachment.length != 0) || (value.context != null && value.context.length != 0)">
-        <fedi-selectable v-bind:uri="a.id" v-for="a in value.attachment" v-bind:key="a.id" v-html="a.embed">
-        </fedi-selectable>
-        <fedi-selectable v-bind:uri="a.id" v-for="a in value.context" v-bind:key="a.id" v-html="a.embed">
-        </fedi-selectable>
-      </md-card-media>
-    </md-card>
+    <div class="card mb-3">
+      <div class="card-header">
+        <div class="small text-muted">
+          <a :href="value.attributedTo.view" class="text-decoration-none">
+            <span class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center me-2"
+                  style="width:32px; height:32px;">
+              {{value.attributedTo.name[0]}}
+            </span>
+            <strong>{{value.attributedTo.name}}</strong> <small>(@{{value.attributedTo.id.split('/').pop()}})</small>
+          </a>
+          <br/>
+          <small><a :href="value.view" class="text-decoration-none">{{published}}</a></small>
+        </div>
+        <div class="fw-semibold mt-2" v-if="value.name"><a :href="value.id" class="text-decoration-none">{{value.name}}</a></div>
+      </div>
+      <div class="card-body" v-html="value.content"></div>
+      <div class="card-body pt-0"
+           v-if="(value.attachment != null && value.attachment.length != 0) || (value.context != null && value.context.length != 0)">
+        <div class="d-flex flex-wrap gap-2">
+          <fedi-selectable v-bind:uri="a.id" v-for="a in value.attachment" v-bind:key="a.id" v-html="a.embed">
+          </fedi-selectable>
+          <fedi-selectable v-bind:uri="a.id" v-for="a in value.context" v-bind:key="a.id" v-html="a.embed">
+          </fedi-selectable>
+        </div>
+      </div>
+    </div>
     `,
     watch: {
     },
