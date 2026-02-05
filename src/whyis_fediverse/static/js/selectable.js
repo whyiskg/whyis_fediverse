@@ -1,6 +1,6 @@
-import {Vue, axios, createApp} from '../../../dist/whyis.js';
+import {axios, Vue} from '../../../dist/whyis.js';
 
-export default Vue.component('fedi-selectable', {
+const component = {
     name: "fedi-selectable",
     props : {
         "uri": String
@@ -38,4 +38,6 @@ export default Vue.component('fedi-selectable', {
             }
         },
     },
-})
+};
+
+export default Vue.component('fedi-selectable', component);

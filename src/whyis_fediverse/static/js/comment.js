@@ -3,10 +3,9 @@ import relativeTime from '//unpkg.com/dayjs@1.11.13/esm/plugin/relativeTime';
 dayjs.extend(relativeTime);
 
 import selectable from './selectable.js';
+import {axios, Vue} from '../../../dist/whyis.js';
 
-import {Vue, axios, createApp} from '../../../dist/whyis.js';
-
-export default Vue.component('fedi-comment', {
+const component = {
     name: "fedi-comment",
     props:{
         value: {
@@ -30,18 +29,18 @@ export default Vue.component('fedi-comment', {
     typing_template: `
     `,
     template: `
-    <md-content style="margin-top:1.5em; width:100%">
-      <div class="md-layout" v-if="value.attachment != null && value.attachment.length != 0">
-        <fedi-selectable class="md-layout-item md-size-30" v-bind:uri="a.id" v-for="a in value.attachment" v-bind:key="a.id" v-html="a.embed">
+    <div class="mt-3 w-100">
+      <div class="row g-2" v-if="value.attachment != null && value.attachment.length != 0">
+        <fedi-selectable class="col-12 col-md-4" v-bind:uri="a.id" v-for="a in value.attachment" v-bind:key="a.id" v-html="a.embed">
         </fedi-selectable>
       </div>
-      <div class="md-layout" v-if="value.context != null && value.context.length != 0">
-        <fedi-selectable class="md-layout-item md-size-30" v-bind:uri="a.id" v-for="a in value.context" v-bind:key="a.id" v-html="a.embed">
+      <div class="row g-2" v-if="value.context != null && value.context.length != 0">
+        <fedi-selectable class="col-12 col-md-4" v-bind:uri="a.id" v-for="a in value.context" v-bind:key="a.id" v-html="a.embed">
         </fedi-selectable>
       </div>
-      <div style="width:fit-content; margin-top:0.5em; border-radius:1em; padding-left:0.75em; padding-right:0.75em; background-color:lightgray">
+      <div class="d-inline-block bg-light rounded-pill px-3 py-2 mt-2">
         <small>
-          <a :href="value.attributedTo.view">
+          <a :href="value.attributedTo.view" class="text-decoration-none">
             <strong>{{value.attributedTo.name}}</strong>
             (@{{value.attributedTo.id.split('/').pop()}})
             {{published}}
@@ -51,16 +50,16 @@ export default Vue.component('fedi-comment', {
       </div>
       <div v-for="agent in value.typing"
         v-bind:key="agent.id"
-        style="width:fit-content; margin-top:0.5em; border-radius:1em; padding-left:0.75em; padding-right:0.75em; background-color:lightgray">
+        class="d-inline-block bg-light rounded-pill px-3 py-2 mt-2">
         <small>
-          <a :href="agent.view">
+          <a :href="agent.view" class="text-decoration-none">
             <strong>{{agent.name}}</strong>
             (@{{agent.id.split('/').pop()}})
             <spinner :loading="true" text=''/>
           </a>
         </small>
       </div>
-    </md-content>
+    </div>
     `,
     watch: {
     },
@@ -106,4 +105,6 @@ export default Vue.component('fedi-comment', {
     },
     created(){
     }
-})
+};
+
+export default Vue.component('fedi-comment', component);

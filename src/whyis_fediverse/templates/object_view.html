@@ -16,11 +16,13 @@
     <script type="module" src="{{url_for('static',filename='plugins/fediverse/js/post_view.js')}}"></script>
 {% endblock %}
 {% block content %}
-<md-card-content>
-  <div class="md-layout md-gutter">
-    <div class="md-layout-item">
-      <fedi-post-view object="{{this.identifier}}"></fedi-post-view>
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-12">
+        <fedi-post-view object="{{this.identifier}}"></fedi-post-view>
+      </div>
     </div>
   </div>
-</md-card-content>  
+</div>
 {% endblock %}

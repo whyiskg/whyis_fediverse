@@ -1,4 +1,4 @@
-import {Vue, axios, createApp} from '../../../dist/whyis.js';
+import {axios, Vue} from '../../../dist/whyis.js';
 
 import post from './selections.js';
 
@@ -80,7 +80,7 @@ async function uploadFiles(fileList, uri){
     return distrLDs;
 }
 
-export default Vue.component('fedi-new-post', {
+const component = {
     name: "fedi-new-post",
     props:{
         entity: {
@@ -109,38 +109,41 @@ export default Vue.component('fedi-new-post', {
         }
     },
     template: `
-    <md-card>
-        <md-card-content>
-          <md-field>
-            <label>What's on your mind?</label>
-            <md-textarea v-on:keyup.enter.exact="sendPost()"
-                         v-model="post.content" 
-                         md-autogrow>
-            </md-textarea>
-            <md-button class="md-icon-button" @click="sendPost()">
-              <md-icon  md-size="small">send</md-icon>
-            </md-button>
-            </md-field>
-            <div class="md-layout">
-              <div class="md-layout-item md-size-20" style="position:relative"
-                   v-for="item in selection"
-                   v-bind:key="item"
-                   v-on:mouseenter="hovers[item] = true"
-                   v-on:mouseleave="hovers[item] = false" >
-                <div v-html="embeds[item]"></div>
-                <md-button style="position: absolute; right: 0; top: 0; "
-                           class="md-icon-button md-raised md-mini"
-                           v-on:click="unselect(item)">
-                  <md-icon>delete</md-icon>
-                </md-button>
-              </div>
+    <div class="card mb-3">
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">What's on your mind?</label>
+            <div class="d-flex align-items-start gap-2">
+              <textarea class="form-control flex-grow-1"
+                        rows="3"
+                        v-on:keyup.enter.exact="sendPost()"
+                        v-model="post.content"></textarea>
+              <button type="button" class="btn btn-primary btn-sm mt-1" @click="sendPost()">
+                <i class="bi bi-send"></i>
+              </button>
             </div>
-            <md-field id="media_upload">
-              <label>Add media</label>
-              <md-file name="media_upload" ref="attachments" v-model="attachments" multiple />
-            </md-field>
-        </md-card-content>
-    </md-card>
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-6 col-md-3 position-relative"
+                 v-for="item in selection"
+                 v-bind:key="item"
+                 v-on:mouseenter="hovers[item] = true"
+                 v-on:mouseleave="hovers[item] = false" >
+              <div v-html="embeds[item]"></div>
+              <button type="button"
+                      class="btn btn-danger btn-sm position-absolute top-0 end-0"
+                      v-on:click="unselect(item)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div class="mb-3" id="media_upload">
+            <label class="form-label">Add media</label>
+            <input class="form-control" type="file" name="media_upload" ref="attachments" multiple
+                   @change="attachments = $event.target.files"/>
+          </div>
+        </div>
+    </div>
     `,
     watch: {
         selection: {
@@ -196,7 +199,7 @@ export default Vue.component('fedi-new-post', {
 	    this.post.published = now.toISOString();
             this.post.context = this.selection;
 	    
-	    let attachments = this.$refs.attachments.$refs.inputFile.files;
+	    let attachments = this.$refs.attachments.files;
 	    let old_id = this.id;
 	    let post = this.post;
 
@@ -236,4 +239,6 @@ export default Vue.component('fedi-new-post', {
     },
     created(){
     }
-})
+};
+
+export default Vue.component('fedi-new-post', component);

@@ -1,9 +1,9 @@
-import {Vue, axios, createApp} from '../../../dist/whyis.js';
+import {axios, Vue} from '../../../dist/whyis.js';
 import post from './post.js';
 import newPost from './new_post.js';
 import selections from './selections.js';
 
-export default Vue.component('fedi-discussion', {
+const component = {
     name: "fedi-discussion",
     props:{
         entity: {
@@ -90,4 +90,6 @@ export default Vue.component('fedi-discussion', {
     },
     created(){
     }
-})
+};
+
+export default Vue.component('fedi-discussion', component);

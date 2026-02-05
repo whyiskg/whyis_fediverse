@@ -1,10 +1,10 @@
-import {Vue, axios, createApp} from '../../../dist/whyis.js';
+import {axios, Vue} from '../../../dist/whyis.js';
 import post from './post.js';
 import comment from './comment.js';
 import newPost from './new_post.js';
 import selections from './selections.js';
 
-export default Vue.component('fedi-post-view', {
+const component = {
     name: "fedi-post-view",
     props:{
         object: {
@@ -25,20 +25,19 @@ export default Vue.component('fedi-post-view', {
     template: `
     <fedi-selection>
         <spinner :loading="loading" text='Loading...' v-if="loading"/>
-        <div v-else class="md-layout md-gutter">
-	    <div class="md-layout-item md-scrollbar">
+        <div v-else class="row g-3">
+	    <div class="col-12 col-lg-6 overflow-y-auto">
 	      <fedi-post v-if="post != null" 
                          v-bind:value="post">
               </fedi-post>
 	    </div>
-	    <div class="md-layout-item md-scrollbar">
+	    <div class="col-12 col-lg-6 overflow-y-auto">
               <div>
-	        <md-empty-state
-		    v-if="replies == null || replies.length == 0"
-		    md-icon="forum"
-                    md-label="Reply to this thread"
-                    md-description="Reply below to continue this conversation.">
-		</md-empty-state>
+	        <div v-if="replies == null || replies.length == 0" class="border rounded p-4 text-center text-muted">
+                  <i class="bi bi-chat-dots fs-1 mb-2 d-block"></i>
+                  <div class="fw-semibold">Reply to this thread</div>
+                  <div>Reply below to continue this conversation.</div>
+                </div>
                 <div v-else>
                   <fedi-comment v-if="replyData[reply]"
                              v-for="reply in replies"
@@ -49,14 +48,9 @@ export default Vue.component('fedi-post-view', {
 	      </div>
               <div v-for="agent in post.typing"
                    v-bind:key="agent.id"
-                   style="width:fit-content; 
-                          margin-top:0.5em; 
-                          border-radius:1em; 
-                          padding-left:0.75em; 
-                          padding-right:0.75em; 
-                          background-color:lightgray">
+                   class="d-inline-block bg-light rounded-pill px-3 py-2 mt-2">
                 <small>
-                  <a :href="agent.view">
+                  <a :href="agent.view" class="text-decoration-none">
                     <strong>{{agent.name}}</strong>
                     (@{{agent.id.split('/').pop()}})
                     <spinner :loading="true" text=''/>
@@ -130,4 +124,6 @@ export default Vue.component('fedi-post-view', {
     async unmounted() {
         window.removeEventListener("scroll", this.scrollBottom)
     }
-})
+};
+
+export default Vue.component('fedi-post-view', component);
